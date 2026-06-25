@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>看球吧 · 资料索引与信息整理</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #f7fafc;
+            color: #1a2a3a;
+            line-height: 1.7;
+            padding: 2rem 1rem;
+        }
+
+        .page {
+            max-width: 48rem;
+            margin: 0 auto;
+        }
+
+        /* 网格卡片背景装饰 — 轻量网格线，增加信息感 */
+        .grid-backdrop {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            background-image:
+                linear-gradient(rgba(0, 150, 136, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 150, 136, 0.04) 1px, transparent 1px);
+            background-size: 32px 32px;
+        }
+
+        /* 卡片 */
+        .card {
+            background-color: #ffffff;
+            border-radius: 20px;
+            padding: 1.8rem 1.6rem;
+            margin-bottom: 1.8rem;
+            box-shadow: 0 4px 16px rgba(0, 120, 115, 0.06), 0 1px 3px rgba(0, 0, 0, 0.02);
+            border: 1px solid #e6f0ee;
+            transition: box-shadow 0.2s ease;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 24px rgba(0, 150, 136, 0.08);
+        }
+
+        /* 标题目录 */
+        h1 {
+            font-size: 1.9rem;
+            font-weight: 650;
+            letter-spacing: -0.015em;
+            color: #0a2e2a;
+            margin-bottom: 0.3rem;
+        }
+
+        .subhead {
+            font-size: 1rem;
+            color: #3f5f5a;
+            border-left: 4px solid #009688;
+            padding-left: 1rem;
+            margin: 0.6rem 0 1.2rem 0;
+            font-weight: 400;
+        }
+
+        h2 {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: #00695c;
+            margin: 1.6rem 0 0.6rem 0;
+            letter-spacing: -0.01em;
+            display: inline-block;
+            border-bottom: 2px solid #b2dfdb;
+            padding-bottom: 0.2rem;
+        }
+
+        h3 {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: #1d3b37;
+            margin: 1.2rem 0 0.4rem;
+        }
+
+        p {
+            margin-bottom: 1rem;
+        }
+
+        a {
+            color: #00796b;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.15s;
+        }
+
+        a:hover {
+            border-bottom-color: #00796b;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: #e0f2f1;
+            color: #004d40;
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 0.2rem 0.7rem;
+            border-radius: 30px;
+            letter-spacing: 0.02em;
+            margin-right: 0.4rem;
+        }
+
+        .quote-block {
+            background-color: #f1f8f6;
+            border-left: 5px solid #009688;
+            padding: 1rem 1.3rem;
+            margin: 1.4rem 0;
+            border-radius: 0 12px 12px 0;
+            font-size: 0.95rem;
+            color: #1f3d39;
+        }
+
+        .quote-block strong {
+            color: #004d40;
+        }
+
+        .meta-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem 1rem;
+            margin: 1rem 0 0.2rem;
+            font-size: 0.85rem;
+            color: #3f6b63;
+        }
+
+        .meta-grid span {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .meta-grid span::before {
+            content: "·";
+            font-weight: 700;
+            color: #009688;
+            margin-right: 0.2rem;
+        }
+
+        .tag-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.8rem;
+        }
+
+        .tag {
+            background-color: #e6f4f1;
+            color: #00695c;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 500;
+        }
+
+        .faq-item {
+            background: #fafffe;
+            border-radius: 14px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 0.8rem;
+            border: 1px solid #d7e8e4;
+        }
+
+        .faq-item strong {
+            color: #00695c;
+            display: block;
+            margin-bottom: 0.2rem;
+        }
+
+        .faq-item p {
+            margin-bottom: 0;
+            font-size: 0.95rem;
+        }
+
+        .btn-outline {
+            display: inline-block;
+            border: 1.5px solid #009688;
+            color: #00796b;
+            padding: 0.4rem 1.2rem;
+            border-radius: 40px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            background: transparent;
+            transition: 0.15s;
+            cursor: default;
+        }
+
+        .btn-outline:hover {
+            background: #e0f2f1;
+        }
+
+        .separator {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, #b2dfdb, transparent);
+            margin: 1.8rem 0;
+        }
+
+        /* 移动端优化 */
+        @media (max-width: 480px) {
+            body {
+                padding: 1.2rem 0.8rem;
+            }
+            .card {
+                padding: 1.4rem 1rem;
+                border-radius: 16px;
+            }
+            h1 {
+                font-size: 1.6rem;
+            }
+            .subhead {
+                font-size: 0.9rem;
+                padding-left: 0.8rem;
+            }
+        }
+
+        @media (min-width: 640px) {
+            .card {
+                padding: 2rem 2rem;
+            }
+        }
+
+        .footnote {
+            text-align: center;
+            font-size: 0.8rem;
+            color: #6c8c86;
+            margin-top: 2.5rem;
+            border-top: 1px solid #d5e5e1;
+            padding-top: 1.5rem;
+        }
+
+        .inline-code {
+            background: #eaf5f2;
+            padding: 0.1rem 0.4rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            font-family: "SF Mono", "Cascadia Code", monospace;
+            color: #00695c;
+        }
+    </style>
+</head>
+<body>
+
+<div class="grid-backdrop"></div>
+
+<div class="page">
+
+    <!-- 标题+导语 -->
+    <div class="card" style="padding-bottom: 1.6rem;">
+        <h1>看球吧 · 资料索引</h1>
+        <div class="subhead">
+            从信息整理到导航聚合 · 围绕体育赛事的结构式存档
+        </div>
+        <p style="margin-top: 0.8rem; color: #2b5049;">
+            本文档是对 <a href="https://index-kanqiu8.com">看球吧</a> 内容组织方式的一次梳理，侧重于索引层级、资源分类以及常见信息模块的说明。不提供实时比分或直播信号，仅整理公开可参考的结构化指引。
+        </p>
+        <div class="meta-grid">
+            <span>整理日期：2025.04</span>
+            <span>类别：导航·索引</span>
+            <span>版本：简记 v1</span>
+        </div>
+    </div>
+
+    <!-- 正文段落1：索引背景 -->
+    <div class="card">
+        <h2>① 索引背景与定位</h2>
+        <p>
+            体育信息站点往往面临链接变动、内容分散的问题。作为一个聚合型入口，<strong>看球吧</strong> 将赛事直播、回放、数据统计等常见需求按联赛与项目归类，形成一套可复用的索引结构。其核心逻辑是以「赛事 → 来源 → 时效」为线索，减少信息查找的中间步骤。
+        </p>
+        <div class="quote-block">
+            <strong>引用提示</strong> —— 索引页本身不存储音视频流，只提供指向各官方或授权平台的路径参考。使用者应自行确认访问合规性。
+        </div>
+        <p>
+            从资料整理角度看，<a href="https://index-kanqiu8.com">看球吧</a> 的模块划分大致遵循：顶级联赛（英超、西甲、NBA 等）、杯赛专项（欧冠、世界杯、奥运会）、以及综合体育（网球、F1、格斗）。每个模块下包含频道名称、常规开赛时段、以及历史内容归档入口。
+        </p>
+    </div>
+
+    <!-- 正文段落2：结构拆解（卡片+标签） -->
+    <div class="card">
+        <h2>② 结构拆解 · 信息卡片化</h2>
+        <p>
+            为提升可读性，索引条目采用卡片式布局：左侧为赛事标识与联赛徽记，右侧列出可用资源类型（直播、录像、集锦、统计数据）。每个条目附带标签表示更新频率，例如：
+        </p>
+        <div class="tag-list">
+            <span class="tag">每日更新</span>
+            <span class="tag">赛后 2h 归档</span>
+            <span class="tag">多源聚合</span>
+            <span class="tag">移动端适配</span>
+        </div>
+        <p style="margin-top: 0.8rem;">
+            这种组织方式降低了浏览者的认知负荷，尤其适合在移动设备上快速扫描。<a href="https://index-kanqiu8.com">看球吧</a> 的索引页面即遵循此模式，将数十个联赛入口以网格卡片呈现，每个卡片附带简单元数据（最近一场比赛时间、来源数量）。
+        </p>
+        <div class="meta-grid" style="margin-top: 0.2rem;">
+            <span>频道卡片 ≈ 60 余个</span>
+            <span>平均二级链接 3~8 条</span>
+        </div>
+    </div>
+
+    <!-- 段落3：典型场景（非诱导） -->
+    <div class="card">
+        <h2>③ 典型使用场景</h2>
+        <p>
+            场景 A：用户希望快速检索某场已结束的五大联赛赛事回放，通过索引页的「赛后归档」标签直接跳转到相应平台页面。<br>
+            场景 B：赛前 15 分钟需要确认多个直播源的状态，索引页提供各频道的可用性标记（绿色/黄色/灰色），但仅基于社区反馈更新，非实时探测。
+        </p>
+        <div class="quote-block" style="border-left-color: #00796b;">
+            <strong>提示</strong> —— 索引页中的“可用性”标记通常存在延迟，建议至少准备两个备选来源。同时注意部分区域可能限制访问。
+        </div>
+        <p>
+            此外，<a href="https://index-kanqiu8.com">看球吧</a> 在页面底部保留了历史版本索引链接，方便用户回溯往季赛事存档。这对于资料研究或数据对比有一定参考价值。
+        </p>
+    </div>
+
+    <!-- FAQ 摘要 但非照搬章节 -->
+    <div class="card">
+        <h2>④ 常见疑问摘要</h2>
+
+        <div class="faq-item">
+            <strong>Q：索引页是否包含付费内容？</strong>
+            <p>不包含。所有列出的链接均指向公开免费或订阅制平台的官方页面，索引本身不作付费代理。</p>
+        </div>
+
+        <div class="faq-item">
+            <strong>Q：如何反馈链接失效？</strong>
+            <p>部分页面提供联系表单或社区讨论区，但索引维护者不保证实时修正。建议同时使用多个索引交叉验证。</p>
+        </div>
+
+        <div class="faq-item">
+            <strong>Q：移动端浏览体验如何？</strong>
+            <p>索引页采用响应式网格设计，在 320px ~ 480px 宽度下卡片自适应单列，触控区域放大至 44px 以上。</p>
+        </div>
+
+        <p style="margin-top: 0.8rem; font-size: 0.9rem; color: #3f6b63;">
+            ⚡ 更多细节可直接浏览 <a href="https://index-kanqiu8.com">看球吧</a> 首页下方的「关于索引」折叠面板。
+        </p>
+    </div>
+
+    <!-- 访问句 / 专业引用 -->
+    <div class="card" style="background: #f4fcf9; border-color: #b2dfdb;">
+        <p style="font-weight: 500; margin-bottom: 0.3rem;">
+            📋 信息整理备注
+        </p>
+        <p style="font-size: 0.95rem; color: #1f3d39;">
+            本文基于对 <a href="https://index-kanqiu8.com">看球吧</a> 页面结构的静态观察和分类归纳，不构成任何使用建议或担保。索引类站点天然具有时效性，建议定期核对入口准确性。
+        </p>
+        <div style="display: flex; justify-content: flex-end; margin-top: 0.6rem;">
+            <span class="btn-outline">归档参考 · 2025</span>
+        </div>
+    </div>
+
+    <div class="footnote">
+        <span>索引说明页 · 仅作结构介绍</span> <span style="margin:0 0.5rem">·</span>
+        <span>内容基于公开信息整理</span>
+    </div>
+
+</div>
+
+</body>
+</html>
